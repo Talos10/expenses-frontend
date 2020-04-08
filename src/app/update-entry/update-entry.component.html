@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>Update entry</h2>
+<h4>Once you saved the changes, refresh the page in order to see the newly updated entry.</h4>
+<mat-dialog-content [formGroup]="updateForm">
+    <mat-form-field class="new-entry-field">
+        <!-- The formControlName string given here must match the name of the control that we
+        created inside the FormGroup property variable from the new-entry.component.ts file.
+        Make sure the formControlName attribute is given to the tag that will actually manipulate
+        the data so don't give it to the mat-form-field but to the input or mat-select instead.-->
+        <input matInput placeholder="Entry description" formControlName="description"/>
+    </mat-form-field>
+    <br/>
+    <mat-form-field class="new-entry-field">
+        <mat-select placeholder="Entry type" formControlName="isExpense">
+            <!-- Contains the options of the drop-down menu. The *ngFor is a for loop which will go
+            through our types array and load them all up as options. Here, types is an array which
+            contains all the possible types (expense and income). This array is found in the
+            new-entry.component.ts file -->
+            <mat-option *ngFor="let type of types" [value]="type.value">
+                {{type.display}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    <br/>
+    <mat-form-field class="new-entry-field">
+        <input matInput placeholder="Entry value" formControlName="value"/>
+    </mat-form-field>
+</mat-dialog-content>
+<mat-dialog-actions>
+    <button mat-raised-button (click)="close()">Close</button>
+    <button mat-raised-button class="mat-primary" (click)="save()" [disabled]="!updateForm.valid">Save</button>
+</mat-dialog-actions>

@@ -1,0 +1,49 @@
+<!-- Table to hold our entries. The dataSource is an array in the entries.component.ts file
+which contains the data that we want to display. -->
+<table mat-table [dataSource]="dataSource" class="mat-elevation-z8">
+    <!-- Description Column. Here, an element is one item from the dataSource array and so
+    each element is of type defined in the EntryElement.ts file. Also, the matColumnDef string
+    is one of the string values in the displayedColumns property variable array that was defined
+    in the entries.component.html file.-->
+    <ng-container matColumnDef="Description">
+        <th mat-header-cell *matHeaderCellDef> Description </th>
+        <td mat-cell *matCellDef="let element"> {{element.Description}} </td>
+    </ng-container>
+
+    <!-- isExpense Column -->
+    <ng-container matColumnDef="IsExpense">
+        <th mat-header-cell *matHeaderCellDef> Type </th>
+        <!-- If the IsExpense attribute of the element of type EntryElement is true, then display
+        the text Expense. Else, display Income. We need the *matCellDef="let element" since it
+        defines the variable element which is an element of the dataSource array.-->
+        <td mat-cell *matCellDef="let element" [ngStyle]="element.IsExpense ? {color: 'red'} : {color: 'green'}"> {{(element.IsExpense) ? 'Expense' : 'Income'}} </td>
+    </ng-container>
+
+    <!-- Value Column -->
+    <ng-container matColumnDef="Value">
+        <th mat-header-cell *matHeaderCellDef> Value </th>
+        <td mat-cell *matCellDef="let element"> ${{element.Value}} </td>
+    </ng-container>
+
+    <!-- Buttons Column -->
+    <ng-container matColumnDef="Actions">
+        <th mat-header-cell *matHeaderCellDef> Actions </th>
+        <td mat-cell *matCellDef="let element">
+            <!-- The edit button calls the updateEntry method from the entries.component.ts file
+            with the entry that we want to update as the element argument. -->
+            <button (click)="updateEntry(element)" mat-raised-button color="primary">
+                <b>Edit</b>
+            </button>
+            <!-- The delete button will redirect us to the route /delete-entry which will be the
+            confirmation screen (if we really want to delete the entry) and the element.Id
+            is the id of our entry and so we can now go to /delete-entry/1 if 1 is the element.Id. -->
+            <button [routerLink]="['/delete-entry', element.Id]" mat-raised-button color="warn">
+                <b>Delete</b>
+            </button>
+        </td>
+    </ng-container>
+
+     <!-- This is the header with the names of our columns -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+</table>
